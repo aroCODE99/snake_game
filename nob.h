@@ -635,8 +635,8 @@ NOBDEF void nob_temp_rewind(size_t checkpoint);
 // "/path/to/a/file.c" -> "file.c"; "/path/to/a/directory" -> "directory"
 NOBDEF const char *nob_path_name(const char *path);
 NOBDEF bool nob_rename(const char *old_path, const char *new_path);
-NOBDEF int nob_needs_rebuild(const char *output_path, const char **input_paths, size_t input_paths_count);
 NOBDEF int nob_needs_rebuild1(const char *output_path, const char *input_path);
+NOBDEF int nob_needs_rebuild(const char *output_path, const char **input_paths, size_t input_paths_count);
 NOBDEF int nob_file_exists(const char *file_path);
 NOBDEF const char *nob_get_current_dir_temp(void);
 NOBDEF bool nob_set_current_dir(const char *path);
@@ -2024,7 +2024,7 @@ NOBDEF int nob_needs_rebuild(const char *output_path, const char **input_paths, 
     time_t output_path_time = statbuf.st_mtime;
 
     for (size_t i = 0; i < input_paths_count; ++i) {
-        const char *input_path = input_paths[i];
+        const char *input_path = input_paths[i];   
         if (stat(input_path, &statbuf) < 0) {
             // NOTE: non-existing input is an error cause it is needed for building in the first place
             nob_log(NOB_ERROR, "could not stat %s: %s", input_path, strerror(errno));
